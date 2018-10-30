@@ -32,5 +32,9 @@ fi
 echo "INFO: cloning flightline web app."
 git clone https://danny@git.dannysplace.net/scm/score/score-flightline-node.git /data/volumes/html
 
-chown -r www-data:www-data /data/volumes/html/db /data/volumes/html/log
+chown -R www-data:www-data /data/volumes/html/db /data/volumes/html/log
 chmod 2775 /data/volumes/html/db /data/volumes/html/log
+
+cd /data/compose/flightline
+docker-compose up -d
+docker-compose logs
