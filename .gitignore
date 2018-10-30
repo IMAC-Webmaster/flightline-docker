@@ -29,3 +29,7 @@ nbproject/
 #Local files
 containers/
 volumes/
+buildoutput
+enddate
+nohup.out
+startdate

@@ -9,6 +9,6 @@ web:
         - php
 
 php:
-    image: asaa/php-rpi
+    image: sputnikdan/php-rpi:7.2-fpm
     volumes: 
         - ../../volumes/html:/code
