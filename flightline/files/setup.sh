@@ -6,8 +6,8 @@ if [ $(whoami) != "root" ]; then
 fi
 
 checkDir() {
- dirToCheck = $1
- if [ -e "$dirToCheck" && -d "$dirToCheck" ]; then
+ dirToCheck=$1
+ if [ -e "$dirToCheck" -a -d "$dirToCheck" ]; then
    echo "INFO: Dir $dirToCheck is OK."
  else
    echo "ERROR: Dir $dirToCheck is NOT OK.  Aborting."
@@ -31,3 +31,6 @@ fi
 
 echo "INFO: cloning flightline web app."
 git clone https://danny@git.dannysplace.net/scm/score/score-flightline-node.git /data/volumes/html
+
+chown -r www-data:www-data /data/volumes/html/db /data/volumes/html/log
+chmod 2775 /data/volumes/html/db /data/volumes/html/log
