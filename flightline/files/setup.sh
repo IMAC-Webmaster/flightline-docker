@@ -35,6 +35,6 @@ git clone https://danny@git.dannysplace.net/scm/score/score-flightline-node.git 
 chown -R www-data:www-data /data/volumes/html/db /data/volumes/html/log
 chmod 2775 /data/volumes/html/db /data/volumes/html/log
 
-cd /data/compose/flightline
+cd /data/composer/flightline
 docker-compose up -d
 docker-compose logs
