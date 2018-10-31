@@ -1,7 +1,10 @@
 #!/bin/bash
 
 OHOME=$(pwd)
-cd "$(dirname '"$0"')"
+SCRIPT=$0
+
+SHOME=$(dirname $SCRIPT)
+cd "$SHOME"
 SHOME=$(pwd)
 
 if [ $(whoami) != "root" ]; then
@@ -10,7 +13,7 @@ if [ $(whoami) != "root" ]; then
 fi
 
 usage() {
-  echo "Usage: $(basename $0)"
+  echo "Usage: $(basename $SCRIPT)"
   echo " --basedir <dir>"
   echo " --sql <empty | skel | testdata | custom <filename>>"
   echo " * --sql empty    - Just create the bare database with empty tables."
@@ -63,7 +66,9 @@ fi
 
 case "$SQLOPT" in
   "empty")
+    ;;
   "skel")
+    ;;
   "testdata")
     ;;
   *)
@@ -89,18 +94,18 @@ fi
 echo "INFO: cloning flightline web app."
 git clone https://danny@git.dannysplace.net/scm/score/score-flightline-node.git "$BASEDIR"/volumes/html
 
-if [ -e "$BASEDIR/volumes/html/flightline.db" ]; then
-  mv "$BASEDIR/volumes/html/flightline.db" "$BASEDIR/volumes/html/flightline_backup.db"
+if [ -e "$BASEDIR/volumes/html/db/flightline.db" ]; then
+  mv "$BASEDIR/volumes/html/db/flightline.db" "$BASEDIR/volumes/html/db/flightline_backup.db"
 fi
 
-cat flightline-empty.sql | sqlite3 "$BASEDIR"/volumes/html/flightline.db
+cat flightline-empty.sql | sqlite3 "$BASEDIR"/volumes/html/db/flightline.db
 case "$SQLOPT" in
   "testdata")
-    cat flightline-add-test-data.sql | sqlite3 "$BASEDIR"/volumes/html/flightline.db
+    cat flightline-add-test-data.sql | sqlite3 "$BASEDIR"/volumes/html/db/flightline.db
     echo "INFO: Created database for flightline with test data included.."
     ;;
   "skel")
-    cat flightline-*-schedules-no-extra-data.sql | sqlite3 "$BASEDIR"/volumes/html/flightline.db
+    cat flightline-*-schedules-no-extra-data.sql | sqlite3 "$BASEDIR"/volumes/html/db/flightline.db
     echo "INFO: Created database for flightline with recent known schedules included."
     ;;
   "empty")
