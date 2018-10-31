@@ -1,9 +1,23 @@
 #!/bin/bash
 
+OHOME=$(pwd)
+cd "$(dirname '"$0"')"
+SHOME=$(pwd)
+
 if [ $(whoami) != "root" ]; then
   echo "ERROR: This script must execute as the root user.   Pease call again using 'sudo'"
   exit
 fi
+
+usage() {
+  echo "Usage: $(basename $0)"
+  echo " --basedir <dir>"
+  echo " --sql <empty | skel | testdata | custom <filename>>"
+  echo " * --sql empty    - Just create the bare database with empty tables."
+  echo " * --sql skel     - Include the sequence definitions for the current year's knowns and alternate knowns."
+  echo " * --sql testdata - Also include some test data with pilots, rounds and some results."
+}
+
 
 checkDir() {
  dirToCheck=$1
@@ -15,26 +29,92 @@ checkDir() {
  fi
 }
 
-[ ! -e /data ] && mkdir /data
-[ ! -e /data/volumes/web ] && mkdir -p /data/volumes/web
-[ ! -e /data/volumes/html ] && mkdir -p /data/volumes/html
+# Transform long options to short ones
+for arg in "$@"; do
+  shift
+  case "$arg" in
+    "--basedir")    set -- "$@" "-d";;
+    "--sql")        set -- "$@" "-s";;
+    *)              set -- "$@" "$arg"
+  esac
+done
 
-checkDir /data
-checkDir /data/volumes
-checkDir /data/volumes/web
-checkDir /data/volumes/html
+# Parse short options
+OPTIND=1
+while getopts "d:s:" opt
+do
+  case "$opt" in
+    "d")
+         BASEDIR=${OPTARG}
+         ;;
+    "s")
+         SQLOPT=${OPTARG}
+         ;;
+    *) usage >&2; cd $OHOME; exit 1 ;;
+  esac
+done
+shift $(expr $OPTIND - 1)
 
-if [ -e /data/composer/flightline/files/default.conf ]; then
+if [ -z "$BASEDIR" -o -z "$SQLOPT" ]; then
+  usage >&2
+  cd $OHOME
+  exit 1
+fi
+
+case "$SQLOPT" in
+  "empty")
+  "skel")
+  "testdata")
+    ;;
+  *)
+    usage >&2; cd $OHOME; exit 1
+    ;;
+esac
+
+
+[ ! -e "$BASEDIR" ] && mkdir "$BASEDIR"
+[ ! -e "$BASEDIR"/volumes/web ] && mkdir -p "$BASEDIR"/volumes/web
+[ ! -e "$BASEDIR"/volumes/html ] && mkdir -p "$BASEDIR"/volumes/html
+
+checkDir "$BASEDIR"
+checkDir "$BASEDIR"/volumes
+checkDir "$BASEDIR"/volumes/web
+checkDir "$BASEDIR"/volumes/html
+
+if [ -e "$BASEDIR"/composer/flightline/files/default.conf ]; then
   echo "INFO: copying web server config"
-  cp /data/composer/flightline/files/default.conf /data/volumes/web/
+  cp "$BASEDIR"/composer/flightline/files/default.conf "$BASEDIR"/volumes/web/
 fi
 
 echo "INFO: cloning flightline web app."
-git clone https://danny@git.dannysplace.net/scm/score/score-flightline-node.git /data/volumes/html
+git clone https://danny@git.dannysplace.net/scm/score/score-flightline-node.git "$BASEDIR"/volumes/html
 
-chown -R www-data:www-data /data/volumes/html/db /data/volumes/html/log
-chmod 2775 /data/volumes/html/db /data/volumes/html/log
+if [ -e "$BASEDIR/volumes/html/flightline.db" ]; then
+  mv "$BASEDIR/volumes/html/flightline.db" "$BASEDIR/volumes/html/flightline_backup.db"
+fi
 
-cd /data/composer/flightline
+cat flightline-empty.sql | sqlite3 "$BASEDIR"/volumes/html/flightline.db
+case "$SQLOPT" in
+  "testdata")
+    cat flightline-add-test-data.sql | sqlite3 "$BASEDIR"/volumes/html/flightline.db
+    echo "INFO: Created database for flightline with test data included.."
+    ;;
+  "skel")
+    cat flightline-*-schedules-no-extra-data.sql | sqlite3 "$BASEDIR"/volumes/html/flightline.db
+    echo "INFO: Created database for flightline with recent known schedules included."
+    ;;
+  "empty")
+    echo "INFO: Created empty database for flightline."
+    ;;
+  *)
+    echo "ERROR: Not sure how to initalise the DB.   Skipping."
+    ;;
+esac
+
+chown -R www-data:www-data "$BASEDIR"/volumes/html/db "$BASEDIR"/volumes/html/log
+chmod 2775 "$BASEDIR"/volumes/html/db "$BASEDIR"/volumes/html/log
+
+
+cd "$BASEDIR"/composer/flightline
 docker-compose up -d
 docker-compose logs
