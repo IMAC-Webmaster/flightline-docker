@@ -40,10 +40,10 @@ In the other case the judge did not look at the screen properly and was not reco
 
  # Some things to add to flightline/score:
   1. Proper deletion of data from Score.   Including sequences.
-  - Authentication.
-  - Ability to re-open a closed round (Only with proper authorisation).
-  - Ability to re-enter scores for a pilot already recorded (Only with proper authorisation).
-  - Ability to zero a flight for the pilot (if they did not fly), and disallow closing the round until all pilots have flown or been zeroed.
-  - Would be great to be able to drill down through Rounds/Flights/Sequences to see raw scores.
-  - Live scoring (nearly done).
-  - Fix non-existent pilot bug.
+  1. Authentication.
+  1. Ability to re-open a closed round (Only with proper authorisation).
+  1. Ability to re-enter scores for a pilot already recorded (Only with proper authorisation).
+  1. Ability to zero a flight for the pilot (if they did not fly), and disallow closing the round until all pilots have flown or been zeroed.
+  1. Would be great to be able to drill down through Rounds/Flights/Sequences to see raw scores.
+  1. Live scoring (nearly done).
+  1. Fix non-existent pilot bug.
