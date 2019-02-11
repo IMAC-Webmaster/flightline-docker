@@ -36,6 +36,8 @@ In the other case the judge did not look at the screen properly and was not reco
 
  - Double rounds are a problem.  It works, but there are plenty of opportunities for the judges to select the wrong flight for the pilot.  I need to re-think how to make this user proof.   Something like not allowing the second seq to be flown until the first one is entered (or zeroed)
 
+ - Unfortunately I could not deliver the results on the day (they were available about 6 hours later).  We found a bug which occurred when the judge chose a non-existent pilot number.  I need to handle this better by not allowing the judge to do that where possible (they can force it).  If it happens I need to be able to detect it in flightline or score and ask the CD to assign a pilot to that sheet.  It's fairly obvious which pilot it will be because the pilot before them will have 2 sheets (for two judges) and the pilot after them will have 2 sheets.   While the problem sheet will reside alongside a legitimate sheet.
+
  # Some things to add to flightline/score:
   1. Proper deletion of data from Score.   Including sequences.
   - Authentication.
@@ -44,3 +46,4 @@ In the other case the judge did not look at the screen properly and was not reco
   - Ability to zero a flight for the pilot (if they did not fly), and disallow closing the round until all pilots have flown or been zeroed.
   - Would be great to be able to drill down through Rounds/Flights/Sequences to see raw scores.
   - Live scoring (nearly done).
+  - Fix non-existent pilot bug.
