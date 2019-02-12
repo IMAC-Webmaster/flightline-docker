@@ -92,8 +92,13 @@ if [ -e "$BASEDIR"/composer/flightline/files/default.conf ]; then
   cp "$BASEDIR"/composer/flightline/files/default.conf "$BASEDIR"/volumes/web/
 fi
 
-echo "INFO: cloning flightline web app."
-git clone https://danny@git.dannysplace.net/scm/score/score-flightline-node.git "$BASEDIR"/volumes/html
+if [ -e "$BASEDIR/volumes/html/.gitignore" ]; then
+  echo "INFO: pulling flightline web app."
+  ( cd "$BASEDIR/volumes/html/" && git pull )
+else
+  echo "INFO: cloning flightline web app."
+  git clone https://danny@git.dannysplace.net/scm/score/score-flightline-node.git "$BASEDIR"/volumes/html
+fi
 
 if [ -e "$BASEDIR/volumes/html/db/flightline.db" ]; then
   mv "$BASEDIR/volumes/html/db/flightline.db" "$BASEDIR/volumes/html/db/flightline_backup_${DATENOW}.db"
