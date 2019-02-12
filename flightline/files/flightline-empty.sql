@@ -7,14 +7,12 @@ CREATE TABLE user
    password       varchar not null,
    address        varchar not null
 );
-
 CREATE TABLE schedule (
    schedId        varchar(8) not null primary key,
    imacClass      varchar(15),
    imacType       varchar(15) CHECK( imacType IN ('Known','Unknown','Freestyle') ) NOT NULL DEFAULT 'Known',
    description    varchar(64) not null
 );
-
 CREATE TABLE IF NOT EXISTS "figure" (
 	`figureNum`	tinyint NOT NULL,
 	`schedId`	varchar ( 8 ),
@@ -25,14 +23,11 @@ CREATE TABLE IF NOT EXISTS "figure" (
 	`k`	tinyint NOT NULL,
 	PRIMARY KEY(`figureNum`,`schedId`)
 );
-
-
 CREATE TABLE IF NOT EXISTS "state" (
 	`key`	TEXT NOT NULL,
 	`value`	TEXT,
 	PRIMARY KEY(`key`)
 );
-
 CREATE TABLE IF NOT EXISTS "pilot" (
 	`pilotId`	integer NOT NULL,
 	`primaryId`	integer NOT NULL,
@@ -46,7 +41,6 @@ CREATE TABLE IF NOT EXISTS "pilot" (
 	`active`	active NOT NULL DEFAULT 1 CHECK(active IN ( 0 , 1 )),
 	PRIMARY KEY(`pilotId`)
 );
-
 CREATE TABLE `flight` (
 	`flightId`	integer NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`noteFlightId`	integer NOT NULL,
@@ -55,7 +49,6 @@ CREATE TABLE `flight` (
 	CONSTRAINT `flightid_round` UNIQUE(`noteFlightId`,`roundId`),
 	CONSTRAINT `roundid_seq` UNIQUE(`roundId`,`sequenceNum`)
 );
-
 CREATE TABLE IF NOT EXISTS "round" (
 	`roundId`	integer,
 	`flightLine`	tinyint,
@@ -73,7 +66,6 @@ CREATE TABLE IF NOT EXISTS "round" (
 	FOREIGN KEY(`schedId`) REFERENCES `schedule`(`schedId`),
 	UNIQUE(`imacClass`,`imacType`,`roundNum`)
 );
-
 CREATE TABLE IF NOT EXISTS "nextFlight" (
 	`nextNoteFlightId`	integer NOT NULL,
 	`nextCompId`	integer NOT NULL,
@@ -81,7 +73,6 @@ CREATE TABLE IF NOT EXISTS "nextFlight" (
 	FOREIGN KEY(`nextPilotId`) REFERENCES `pilot`(`pilotId`),
 	PRIMARY KEY(`nextNoteFlightId`,`nextCompId`,`nextPilotId`)
 );
-
 CREATE TABLE `score` (
 	`sheetId`	integer NOT NULL,
 	`figureNum`	tinyint NOT NULL,
@@ -92,23 +83,23 @@ CREATE TABLE `score` (
 	PRIMARY KEY(`sheetId`,`figureNum`),
 	FOREIGN KEY(`sheetId`) REFERENCES `sheet`(`sheetId`) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
 CREATE TABLE IF NOT EXISTS "sheet" (
-	`sheetId`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	`roundId`	integer NOT NULL,
-	`flightId`	integer NOT NULL,
-	`pilotId`	integer NOT NULL,
-	`judgeNum`	tinyint NOT NULL,
-	`judgeName`	text DEFAULT null,
-	`scribeName`	text DEFAULT null,
-	`comment`	text DEFAULT null,
-	`mppFlag`	tinyint NOT NULL DEFAULT 0 CHECK(mppFlag IN ( 0 , 1 )),
-	`flightZeroed`	tinyint NOT NULL DEFAULT 0 CHECK(flightZeroed IN ( 0 , 1 )),
-	`zeroReason`	text DEFAULT null,
-	UNIQUE(`flightId`,`roundId`,`pilotId`,`judgeNum`),
-	FOREIGN KEY(`pilotId`) REFERENCES `pilot`(`pilotId`),
-	FOREIGN KEY(`flightId`) REFERENCES `flight`(`flightId`),
-	FOREIGN KEY(`roundId`) REFERENCES `round`(`roundId`)
+  `sheetId`        INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `roundId`        integer NOT NULL,
+  `flightId`       integer NOT NULL,
+  `pilotId`        integer NOT NULL,
+  `judgeNum`       tinyint NOT NULL,
+  `judgeName`      text DEFAULT null,
+  `scribeName`     text DEFAULT null,
+  `comment`        text DEFAULT null,
+  `mppFlag`        tinyint NOT NULL DEFAULT 0 CHECK(mppFlag IN ( 0 , 1 )),
+  `flightZeroed`   tinyint NOT NULL DEFAULT 0 CHECK(flightZeroed IN ( 0 , 1 )),
+  `zeroReason`     text DEFAULT null,
+  `phase`          text NOT NULL DEFAULT 'U' CHECK(phase IN ( 'U' , 'S' , 'D' )),
+  UNIQUE(`flightId`,`roundId`,`pilotId`,`judgeNum`),
+  FOREIGN KEY(`pilotId`) REFERENCES `pilot`(`pilotId`),
+  FOREIGN KEY(`flightId`) REFERENCES `flight`(`flightId`),
+  FOREIGN KEY(`roundId`) REFERENCES `round`(`roundId`)
 );
 
 COMMIT;
