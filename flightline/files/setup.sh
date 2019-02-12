@@ -6,6 +6,7 @@ SCRIPT=$0
 SHOME=$(dirname $SCRIPT)
 cd "$SHOME"
 SHOME=$(pwd)
+DATENOW=$(date '+%Y%m%d.%H%M%S')
 
 if [ $(whoami) != "root" ]; then
   echo "ERROR: This script must execute as the root user.   Pease call again using 'sudo'"
@@ -95,7 +96,7 @@ echo "INFO: cloning flightline web app."
 git clone https://danny@git.dannysplace.net/scm/score/score-flightline-node.git "$BASEDIR"/volumes/html
 
 if [ -e "$BASEDIR/volumes/html/db/flightline.db" ]; then
-  mv "$BASEDIR/volumes/html/db/flightline.db" "$BASEDIR/volumes/html/db/flightline_backup.db"
+  mv "$BASEDIR/volumes/html/db/flightline.db" "$BASEDIR/volumes/html/db/flightline_backup_${DATENOW}.db"
 fi
 
 cat flightline-empty.sql | sqlite3 "$BASEDIR"/volumes/html/db/flightline.db
