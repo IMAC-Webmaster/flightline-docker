@@ -34,7 +34,9 @@ In the other case the judge did not look at the screen properly and was not reco
 
  - BUG/Feature request: The top line while scoring should show Judge/Flight/Pilot numbers.   Sometimes it does and sometimes it does not.   **ToDo:** Add image.
 
- - Double rounds are a problem.  It works, but there are plenty of opportunities for the judges to select the wrong flight for the pilot.  I need to re-think how to make this user proof.   Something like not allowing the second seq to be flown until the first one is entered (or zeroed)
+ - Double rounds are a problem.  It works, but there are plenty of opportunities for the judges to select the wrong flight for the pilot.  I need to re-think how to make this user proof.   Something like not allowing the second seq to be flown until the first one is entered (or zeroed).  We switched to single sequences and it went very well after that.
+
+ - rPi wifi is sometimes slow.  I had to reboot twice to get it working.  I was expecting this as I have heard of issues.  There really is no problem running a comp off the pi wifi however it might go more smoothly with a dedicated good quality wifi AP.  James from the Australian Pattern Association reports a similar experience.
 
  - Unfortunately I could not deliver the results on the day (they were available about 6 hours later).  We found a bug which occurred when the judge chose a non-existent pilot number.  I need to handle this better by not allowing the judge to do that where possible (they can force it).  If it happens I need to be able to detect it in flightline or score and ask the CD to assign a pilot to that sheet.  It's fairly obvious which pilot it will be because the pilot before them will have 2 sheets (for two judges) and the pilot after them will have 2 sheets.   While the problem sheet will reside alongside a legitimate sheet.
 
