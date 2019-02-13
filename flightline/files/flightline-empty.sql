@@ -1,16 +1,16 @@
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
 
-drop table figure;
-drop table score;
-drop table sheet;
-drop table flight;
-drop table round;
-drop table state;
-drop table schedule;
-drop table nextFlight;
-drop table pilot;
-drop table user;
+drop table IF EXISTS figure;
+drop table IF EXISTS score;
+drop table IF EXISTS sheet;
+drop table IF EXISTS flight;
+drop table IF EXISTS round;
+drop table IF EXISTS state;
+drop table IF EXISTS schedule;
+drop table IF EXISTS nextFlight;
+drop table IF EXISTS pilot;
+drop table IF EXISTS user;
 
 CREATE TABLE user
 (
