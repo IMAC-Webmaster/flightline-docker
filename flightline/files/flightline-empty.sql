@@ -1,5 +1,17 @@
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
+
+drop table figure;
+drop table score;
+drop table sheet;
+drop table flight;
+drop table round;
+drop table state;
+drop table schedule;
+drop table nextFlight;
+drop table pilot;
+drop table user;
+
 CREATE TABLE user
 (
    userId         varchar not null primary key,
@@ -13,7 +25,7 @@ CREATE TABLE schedule (
    imacType       varchar(15) CHECK( imacType IN ('Known','Unknown','Freestyle') ) NOT NULL DEFAULT 'Known',
    description    varchar(64) not null
 );
-CREATE TABLE IF NOT EXISTS "figure" (
+CREATE TABLE "figure" (
 	`figureNum`	tinyint NOT NULL,
 	`schedId`	varchar ( 8 ),
 	`shortDesc`	varchar ( 20 ) NOT NULL,
@@ -23,12 +35,12 @@ CREATE TABLE IF NOT EXISTS "figure" (
 	`k`	tinyint NOT NULL,
 	PRIMARY KEY(`figureNum`,`schedId`)
 );
-CREATE TABLE IF NOT EXISTS "state" (
+CREATE TABLE "state" (
 	`key`	TEXT NOT NULL,
 	`value`	TEXT,
 	PRIMARY KEY(`key`)
 );
-CREATE TABLE IF NOT EXISTS "pilot" (
+CREATE TABLE "pilot" (
 	`pilotId`	integer NOT NULL,
 	`primaryId`	integer NOT NULL,
 	`secondaryId`	integer,
@@ -49,7 +61,7 @@ CREATE TABLE `flight` (
 	CONSTRAINT `flightid_round` UNIQUE(`noteFlightId`,`roundId`),
 	CONSTRAINT `roundid_seq` UNIQUE(`roundId`,`sequenceNum`)
 );
-CREATE TABLE IF NOT EXISTS "round" (
+CREATE TABLE "round" (
 	`roundId`	integer,
 	`flightLine`	tinyint,
 	`imacClass`	varchar ( 15 ) NOT NULL,
@@ -66,7 +78,7 @@ CREATE TABLE IF NOT EXISTS "round" (
 	FOREIGN KEY(`schedId`) REFERENCES `schedule`(`schedId`),
 	UNIQUE(`imacClass`,`imacType`,`roundNum`)
 );
-CREATE TABLE IF NOT EXISTS "nextFlight" (
+CREATE TABLE "nextFlight" (
 	`nextNoteFlightId`	integer NOT NULL,
 	`nextCompId`	integer NOT NULL,
 	`nextPilotId`	integer NOT NULL,
@@ -83,7 +95,7 @@ CREATE TABLE `score` (
 	PRIMARY KEY(`sheetId`,`figureNum`),
 	FOREIGN KEY(`sheetId`) REFERENCES `sheet`(`sheetId`) ON DELETE CASCADE ON UPDATE CASCADE
 );
-CREATE TABLE IF NOT EXISTS "sheet" (
+CREATE TABLE "sheet" (
   `sheetId`        INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   `roundId`        integer NOT NULL,
   `flightId`       integer NOT NULL,
@@ -101,5 +113,9 @@ CREATE TABLE IF NOT EXISTS "sheet" (
   FOREIGN KEY(`flightId`) REFERENCES `flight`(`flightId`),
   FOREIGN KEY(`roundId`) REFERENCES `round`(`roundId`)
 );
+
+INSERT INTO "state" VALUES('flightLineId','1');
+INSERT INTO "state" VALUES('flightLineName','Default');
+INSERT INTO "state" VALUES('flightLineUrl','http://flightline1.lan/data.php');
 
 COMMIT;
