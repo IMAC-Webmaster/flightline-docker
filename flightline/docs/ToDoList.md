@@ -8,3 +8,4 @@
  1. Live scoring (nearly done).
  1. BUG: Fix non-existent pilot bug.
  1. BUG: If the flightline DB is emptied, and there is no flightline ID defined then there are problems for Score serialising the data from flightline.   Fixed in setup.sh but need to handle it in Score!
+ 1. BUG: If adding the same class twice in flightline, the schedule list is not initialised.   You must first choose a differnet class and then re-select the class you want.
