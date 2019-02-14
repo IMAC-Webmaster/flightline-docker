@@ -7,8 +7,12 @@ web:
         - ../../volumes/web/default.conf:/etc/nginx/conf.d/default.conf
     links:
         - php
+    restart: always
 
 php:
     image: sputnikdan/php-rpi:7.2-fpm
     volumes: 
         - ../../volumes/html:/code
+    ports:
+        - "9000:9000"
+    restart: always
