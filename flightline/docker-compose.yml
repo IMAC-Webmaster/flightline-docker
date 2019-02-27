@@ -3,7 +3,7 @@ web:
     ports:
         - "80:80"
     volumes:
-        - ../../volumes/html:/code
+        - ../../volumes/html:/var/www/html
         - ../../volumes/web/default.conf:/etc/nginx/conf.d/default.conf
     links:
         - php
@@ -12,7 +12,7 @@ web:
 php:
     image: sputnikdan/php-rpi:7.2-fpm
     volumes: 
-        - ../../volumes/html:/code
+        - ../../volumes/html:/var/www/html
     ports:
         - "9000:9000"
     restart: always
