@@ -34,3 +34,4 @@ enddate
 nohup.out
 startdate
 hosts
+docker-compose-laika-xdebug.yml
