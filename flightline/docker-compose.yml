@@ -4,7 +4,7 @@ web:
       - "80:80"
   volumes:
       - /data/volumes/html:/var/www/html
-      - "${PWD}/files/web_conf.d":/etc/nginx/conf.d:ro
+      - ./files/web_conf.d:/etc/nginx/conf.d:ro
   links:
       - php
   restart: always
