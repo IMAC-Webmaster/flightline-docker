@@ -17,7 +17,8 @@ CREATE TABLE user
    userId         varchar not null primary key,
    fullName       varchar not null,
    password       varchar not null,
-   address        varchar not null
+   address        varchar not null,
+   roles	  varchar not null
 );
 CREATE TABLE schedule (
    schedId        varchar(8) not null primary key,
