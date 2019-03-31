@@ -12,8 +12,8 @@ DELETE FROM state;
 DELETE FROM figure;
 DELETE FROM schedule;
 
-INSERT INTO "user" VALUES('danny','Dan Carroll','password','Some Address.');
-INSERT INTO "user" VALUES('nicole','Nicole McNaughton','password','Some Address.');
+INSERT INTO "user" VALUES('admin','Compition Director','@@CDAccess4Me@@','', 'ADMIN,JUDGE');
+INSERT INTO "user" VALUES('judge','Judge','@@JudgePass@@','', 'JUDGE');
 
 INSERT INTO "schedule" VALUES('BAS-KNWN','Basic','Known','Basic Known 2018');
 INSERT INTO "schedule" VALUES('SPO-KNWN','Sportsman','Known','Sportsman Known 2018');
