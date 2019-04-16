@@ -25,7 +25,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: "${PWD}/files/web_conf.d"
+      device: /data/composer/flightline/files/web_conf.d
   html:
     driver: local
     driver_opts:
