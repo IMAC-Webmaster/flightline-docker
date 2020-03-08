@@ -1,9 +1,19 @@
-version: "2"
+version: "3.2"
 services:
+  proxy:
+    image: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - proxy_config:/etc/nginx
+      - proxy_certs:/etc/ssl/private
+    restart: always
+
   web:
     image: nginx:latest
     ports:
-        - "80:80"
+        - "10080:80"
     volumes:
         - html:/var/www/html
         - nginx_confd:/etc/nginx/conf.d:ro
@@ -15,6 +25,11 @@ services:
     image: sputnikdan/php-rpi:7.2-fpm
     volumes:
       - html:/var/www/html
+    #environment:
+    #  PHP_EXTENSION_XDEBUG: 1
+    #  PHP_INI_XDEBUG__REMOTE_PORT: 10000
+    #  PHP_IDE_CONFIG: "servername=localhost"
+    #  XDEBUG_CONFIG: "remote_host=<debugger ip> remote_port=10000 remote_autostart=1"
     ports:
         - "9000:9000"
     restart: always
@@ -25,10 +40,23 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /data/composer/flightline/files/web_conf.d
+      device: "${PWD}/files/web_conf.d"
   html:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /data/volumes/html
+      device: "/data/volumes/html"
+  proxy_config:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${PWD}/files/proxy_config"
+  proxy_certs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${PWD}/files/proxy_certs"
+
