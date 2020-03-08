@@ -6,7 +6,8 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - proxy_config:/etc/nginx
+      - ${PWD}/files/proxy_nginx.conf:/etc/nginx/nginx.conf:ro
+      - proxy_conf.d:/etc/nginx/conf.d:ro
       - proxy_certs:/etc/ssl/private
     restart: always
 
@@ -16,7 +17,7 @@ services:
         - "10080:80"
     volumes:
         - html:/var/www/html
-        - nginx_confd:/etc/nginx/conf.d:ro
+        - web_confd:/etc/nginx/conf.d:ro
     links:
         - php
     restart: always
@@ -35,7 +36,7 @@ services:
     restart: always
 
 volumes:
-  nginx_confd:
+  web_confd:
     driver: local
     driver_opts:
       type: none
@@ -47,12 +48,12 @@ volumes:
       type: none
       o: bind
       device: "/data/volumes/html"
-  proxy_config:
+  proxy_confd:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: "${PWD}/files/proxy_config"
+      device: "${PWD}/files/proxy_conf.d"
   proxy_certs:
     driver: local
     driver_opts:
