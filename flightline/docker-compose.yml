@@ -16,14 +16,14 @@ services:
   web:
     image: nginx:latest
     ports:
-        - "10080:80"
+      - "10080:80"
     depends_on:
       - "php"
     volumes:
-        - html:/var/www/html
-        - web_confd:/etc/nginx/conf.d:ro
+      - html:/var/www/html
+      - web_confd:/etc/nginx/conf.d:ro
     links:
-        - php
+      - php
     restart: always
 
   php:
