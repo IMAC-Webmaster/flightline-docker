@@ -36,3 +36,7 @@ startdate
 hosts
 docker-compose-local-*.yml
 flightline/files/web_conf.d/local*
+flightline*.db
+flightline*.db-shm
+flightline*.db-wal
+
