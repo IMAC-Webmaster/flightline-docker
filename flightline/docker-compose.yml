@@ -39,6 +39,14 @@ services:
         - "9000:9000"
     restart: always
 
+  frontail:
+    image: mthenw/frontail
+    volumes:
+      - html:/var/www/html
+      - ${PWD}/files/logsyntax.json:/frontail/preset/logsyntax.json
+    command: [ "--number", "500", "--ui-highlight", "--ui-highlight-preset", "./preset/logsyntax.json", "--url-path", "/frontail", "/var/www/html/log/flightline*.log" ]
+    restart: always
+
 volumes:
   web_confd:
     driver: local

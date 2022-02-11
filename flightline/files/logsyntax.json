@@ -1,0 +1,14 @@
+{
+  "words": {
+    "debug":     "color: blue;",
+    "info":      "color: black;  background-color: lightgreen;",
+    "notice":    "color: black;",
+    "warning":   "color: black;  background-color: yellow;",
+    "error":     "color: black;  background-color: pink;",
+    "critical":  "color: white;  background-color: darkmagenta;",
+    "alert":     "color: yellow; background-color: red;",
+    "emergency": "color: white;  background-color: black;   font-weight: bold;"
+  },
+  "lines": {
+  }
+}
