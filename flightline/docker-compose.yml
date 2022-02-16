@@ -40,7 +40,9 @@ services:
     restart: always
 
   frontail:
-    image: mthenw/frontail
+    build:
+      context: ./build/frontail
+    image: sputnik/frontail
     volumes:
       - html:/var/www/html
       - ${PWD}/files/logsyntax.json:/frontail/preset/logsyntax.json
